@@ -1,0 +1,14 @@
+PATH
+  remote: .
+  specs:
+    s3_relay (0.0.1)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  s3_relay!
