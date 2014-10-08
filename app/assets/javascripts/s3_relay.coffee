@@ -1,3 +1,20 @@
+saveUrl = (uuid, public_url) ->
+  private_url = null
+
+  $.ajax
+    type: "POST"
+    url: "/s3_relay/uploads"
+    async: false
+    data:
+      uuid: uuid
+      public_url: public_url
+    success: (data, status, xhr) ->
+      private_url = data.private_url
+    error: (response) ->
+      console.log response
+
+  return private_url
+
 uploadFile = (fileField) ->
   form = fileField.parent()
   fileInput = document.getElementById("file")
@@ -6,23 +23,23 @@ uploadFile = (fileField) ->
   $.ajax
     type: "GET"
     url: "/s3_relay/uploads/new"
-    success: (response) ->
+    success: (data, status, xhr) ->
       formData = new FormData()
       xhr = new XMLHttpRequest()
-      endpoint = response.endpoint
+      endpoint = data.endpoint
 
-      formData.append("AWSAccessKeyID", response.awsaccesskeyid)
-      formData.append("x-amz-server-side-encryption", response.x_amz_server_side_encryption)
-      formData.append("key", response.key)
-      formData.append("success_action_status", response.success_action_status)
-      formData.append("acl", response.acl)
-      formData.append("policy", response.policy)
-      formData.append("signature", response.signature)
+      formData.append("AWSAccessKeyID", data.awsaccesskeyid)
+      formData.append("x-amz-server-side-encryption", data.x_amz_server_side_encryption)
+      formData.append("key", data.key)
+      formData.append("success_action_status", data.success_action_status)
+      formData.append("acl", data.acl)
+      formData.append("policy", data.policy)
+      formData.append("signature", data.signature)
       formData.append("file", file)
 
       fileField.val("")
 
-      uuid = response.uuid
+      uuid = data.uuid
       form.append("<div id='progress-#{uuid}'></div>")
       progressBar = $("#progress-#{uuid}")
 
@@ -36,14 +53,19 @@ uploadFile = (fileField) ->
           if xhr.status == 201
             progressBar.text("Uploading: #{file.name} - Complete")
 
-            url = $("Location", xhr.responseXML).text()
-            # TODO: Pass URL to app, retrieve private URL and display link
+            public_url = $("Location", xhr.responseXML).text()
+            private_url = saveUrl(uuid, public_url)
+            link = "<a href='#{private_url}'>#{file.name}</a>"
+
+            progressBar.html(link)
           else
             progressBar.text("File could not be uploaded")
             console.log $("Message", xhr.responseXML).text()
 
       xhr.open "POST", endpoint, true
       xhr.send formData
+    error: (response) ->
+      console.log response
 
 jQuery ->
 

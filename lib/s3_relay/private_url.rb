@@ -5,7 +5,7 @@ module S3Relay
 
     def initialize(public_url, options={})
       @path    = URI.parse(public_url).path
-      @expires = (options[:expires] || 1.minute.from_now).to_i
+      @expires = (options[:expires] || 10.minutes.from_now).to_i
     end
 
     def generate

@@ -5,7 +5,11 @@ class S3Relay::UploadsController < ApplicationController
   end
 
   def create
-    # TODO
+    uuid        = params[:uuid]
+    public_url  = params[:public_url]
+    private_url = S3Relay::PrivateUrl.new(public_url).generate
+
+    render json: { private_url: private_url }
   end
 
 end
