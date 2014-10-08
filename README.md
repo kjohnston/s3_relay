@@ -11,6 +11,21 @@ Direct uploads to S3 and ingestion by your Rails app.
 * You may use any file upload/processing libraries you like or none at all to manage ingested files.
 * This gem does not depend on any of the other AWS libraries - they are hefty, advance quickly, are overkill for this solution and you may have one or more of them in your app already.
 
+## Installation
+
+* Add `gem "s3_relay"` to your Gemfile and run `bundle`.
+* Add `mount S3Relay::Engine => "/s3_relay"` to the top of your routes file.
+* Add `//= require s3_relay` to your JavaScript manifest.
+* Add the following environment variables to your app:
+
+```
+S3_RELAY_ACCESS_KEY_ID="abc123"
+S3_RELAY_SECRET_ACCESS_KEY="xzy456"
+S3_RELAY_REGION="us-west-2"
+S3_RELAY_BUCKET="some-s3-bucket"
+S3_RELAY_ACL="private"
+```
+
 ## Contributing
 
 1. [Fork it](https://github.com/kjohnston/s3_relay/fork_select)
