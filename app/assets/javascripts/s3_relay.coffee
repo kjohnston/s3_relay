@@ -5,7 +5,7 @@ uploadFile = (fileField) ->
 
   $.ajax
     type: "GET"
-    url: "/signatures/new"
+    url: "/s3_relay/uploads/new"
     success: (response) ->
       formData = new FormData()
       xhr = new XMLHttpRequest()
