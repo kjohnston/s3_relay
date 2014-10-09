@@ -12,9 +12,9 @@ class S3Relay::UploadsController < ApplicationController
     )
 
     if @upload.save
-      render json: { private_url: @upload.private_url }
+      render json: { private_url: @upload.private_url }, status: 201
     else
-      render json: { errors: @upload.errors }
+      render json: { errors: @upload.errors }, status: 422
     end
   end
 

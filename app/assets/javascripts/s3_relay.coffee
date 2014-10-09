@@ -1,3 +1,9 @@
+displayFailedUpload = (progressColumn=null) ->
+  if progressColumn
+    progressColumn.text("File could not be uploaded")
+  else
+    alert("File could not be uploaded")
+
 saveUrl = (uuid, filename, public_url) ->
   private_url = null
 
@@ -11,19 +17,15 @@ saveUrl = (uuid, filename, public_url) ->
       public_url: public_url
     success: (data, status, xhr) ->
       private_url = data.private_url
-    error: (response) ->
-      # TODO: Handle errors
-      alert response
+    error: (xhr) ->
+      console.log xhr.responseText
 
   return private_url
 
 uploadFiles = (form) ->
   fileInput = $("input[type='file']", form)
   files = fileInput.get(0).files
-
-  for file in files
-    uploadFile(form, file)
-
+  uploadFile(form, file) for file in files
   fileInput.val("")
 
 uploadFile = (form, file) ->
@@ -65,23 +67,26 @@ uploadFile = (form, file) ->
 
       xhr.onreadystatechange = (ev) ->
         if xhr.readyState is 4
+          progressBar.remove()
+
           if xhr.status == 201
             publicUrl = $("Location", xhr.responseXML).text()
             privateUrl = saveUrl(uuid, fileName, publicUrl)
-            link = "<a href='#{privateUrl}'>#{fileName}</a>"
 
-            fileColumn.html(link)
-            progressBar.remove()
+            if privateUrl == null
+              displayFailedUpload(progressColumn)
+            else
+              fileColumn.html("<a href='#{privateUrl}'>#{fileName}</a>")
+
           else
-            progressBar.remove()
-            progressColumn.text("File could not be uploaded")
+            displayFailedUpload(progressColumn)
             console.log $("Message", xhr.responseXML).text()
 
       xhr.open "POST", endpoint, true
       xhr.send formData
-    error: (response) ->
-      # TODO: Handle errors
-      alert response
+    error: (xhr) ->
+      displayFailedUpload()
+      console.log xhr.responseText
 
 jQuery ->
 

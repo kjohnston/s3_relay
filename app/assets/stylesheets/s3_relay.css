@@ -7,7 +7,7 @@
 .s3r-upload-list td {
   border-bottom: 1px solid #ccc;
   padding: .2em;
-  width: 150px;
+  width: 180px;
 }
 
 .s3r-file-url {
@@ -18,7 +18,7 @@
 .s3r-bar {
   background-color: #eee;
   height: 15px;
-  width: 150px;
+  width: 180px;
 }
 
 .s3r-meter {
