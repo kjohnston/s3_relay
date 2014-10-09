@@ -1,4 +1,4 @@
-saveUrl = (uuid, public_url) ->
+saveUrl = (uuid, filename, public_url) ->
   private_url = null
 
   $.ajax
@@ -7,6 +7,7 @@ saveUrl = (uuid, public_url) ->
     async: false
     data:
       uuid: uuid
+      filename: filename
       public_url: public_url
     success: (data, status, xhr) ->
       private_url = data.private_url
@@ -19,6 +20,7 @@ uploadFile = (fileField) ->
   form = fileField.parent()
   fileInput = document.getElementById("file")
   file = fileInput.files[0]
+  fileName = file.name
 
   $.ajax
     type: "GET"
@@ -46,16 +48,16 @@ uploadFile = (fileField) ->
       xhr.upload.addEventListener "progress", (ev) ->
         # Progress...
         percentage = ((ev.position / ev.totalSize) * 100.0).toFixed(2) + "%"
-        progressBar.text("Uploading: #{file.name} - " + percentage)
+        progressBar.text("Uploading: #{fileName} - " + percentage)
 
       xhr.onreadystatechange = (ev) ->
         if xhr.readyState is 4
           if xhr.status == 201
-            progressBar.text("Uploading: #{file.name} - Complete")
+            progressBar.text("Uploading: #{fileName} - Complete")
 
-            public_url = $("Location", xhr.responseXML).text()
-            private_url = saveUrl(uuid, public_url)
-            link = "<a href='#{private_url}'>#{file.name}</a>"
+            publicUrl = $("Location", xhr.responseXML).text()
+            privateUrl = saveUrl(uuid, fileName, publicUrl)
+            link = "<a href='#{privateUrl}'>#{fileName}</a>"
 
             progressBar.html(link)
           else
