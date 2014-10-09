@@ -18,7 +18,7 @@ saveUrl = (uuid, filename, public_url) ->
   return private_url
 
 uploadFiles = (form) ->
-  fileInput = form.find("input[type='file']")
+  fileInput = $("input[type='file']", form)
   files = fileInput.get(0).files
 
   for file in files
@@ -47,26 +47,32 @@ uploadFile = (form, file) ->
       formData.append("file", file)
 
       uuid = data.uuid
-      form.append("<div id='progress-#{uuid}'></div>")
-      progressBar = $("#progress-#{uuid}")
+
+      uploadList = $(".upload-list", form)
+      unless uploadList.length > 0
+        form.append("<table class='upload-list'></table>")
+        uploadList = $(".upload-list", form)
+
+      uploadList.append("<tr id='#{uuid}'><td class='file-url'>#{fileName}</td><td class='progress'><div class='bar'><div class='meter'></div></div></td></tr>")
+      fileColumn = $(".upload-list ##{uuid} .file-url", form)
+      progressBar = $(".upload-list ##{uuid} .bar", form)
+      progressMeter = $(".upload-list ##{uuid} .meter", form)
 
       xhr.upload.addEventListener "progress", (ev) ->
-        # Progress...
-        percentage = ((ev.position / ev.totalSize) * 100.0).toFixed(2) + "%"
-        progressBar.text("Uploading: #{fileName} - " + percentage)
+        percentage = ((ev.position / ev.totalSize) * 100.0).toFixed(0)
+        progressMeter.css "width", "#{percentage}%"
 
       xhr.onreadystatechange = (ev) ->
         if xhr.readyState is 4
           if xhr.status == 201
-            progressBar.text("Uploading: #{fileName} - Complete")
-
             publicUrl = $("Location", xhr.responseXML).text()
             privateUrl = saveUrl(uuid, fileName, publicUrl)
             link = "<a href='#{privateUrl}'>#{fileName}</a>"
 
-            progressBar.html(link)
+            fileColumn.html(link)
+            progressBar.remove()
           else
-            progressBar.text("File could not be uploaded")
+            alert "File could not be uploaded"
             console.log $("Message", xhr.responseXML).text()
 
       xhr.open "POST", endpoint, true
