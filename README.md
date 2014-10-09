@@ -14,6 +14,7 @@ Direct uploads to S3 and ingestion by your Rails app.
 ## Installation
 
 * Add `gem "s3_relay"` to your Gemfile and run `bundle`.
+* Add migrations to your app and run them with `rake s3_relay:install:migrations db:migrate`.
 * Add `mount S3Relay::Engine => "/s3_relay"` to the top of your routes file.
 * Add `//= require s3_relay` to your JavaScript manifest.
 * Add the following environment variables to your app:
@@ -28,7 +29,7 @@ S3_RELAY_ACL="private"
 
 ## Contributing
 
-1. [Fork it](https://github.com/kjohnston/s3_relay/fork_select)
+1. [Fork it](https://github.com/kjohnston/s3_relay/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
