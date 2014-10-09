@@ -12,14 +12,21 @@ saveUrl = (uuid, filename, public_url) ->
     success: (data, status, xhr) ->
       private_url = data.private_url
     error: (response) ->
-      console.log response
+      # TODO: Handle errors
+      alert response
 
   return private_url
 
-uploadFile = (fileField) ->
-  form = fileField.parent()
-  fileInput = document.getElementById("file")
-  file = fileInput.files[0]
+uploadFiles = (form) ->
+  fileInput = form.find("input[type='file']")
+  files = fileInput.get(0).files
+
+  for file in files
+    uploadFile(form, file)
+
+  fileInput.val("")
+
+uploadFile = (form, file) ->
   fileName = file.name
 
   $.ajax
@@ -38,8 +45,6 @@ uploadFile = (fileField) ->
       formData.append("policy", data.policy)
       formData.append("signature", data.signature)
       formData.append("file", file)
-
-      fileField.val("")
 
       uuid = data.uuid
       form.append("<div id='progress-#{uuid}'></div>")
@@ -67,9 +72,10 @@ uploadFile = (fileField) ->
       xhr.open "POST", endpoint, true
       xhr.send formData
     error: (response) ->
-      console.log response
+      # TODO: Handle errors
+      alert response
 
 jQuery ->
 
   $("form.s3_relay").on "change", "input[type='file']", ->
-    uploadFile($(this))
+    uploadFiles($(this).parent("form"))
