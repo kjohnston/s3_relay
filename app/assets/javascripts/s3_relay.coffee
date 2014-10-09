@@ -72,7 +72,8 @@ uploadFile = (form, file) ->
             fileColumn.html(link)
             progressBar.remove()
           else
-            alert "File could not be uploaded"
+            progressBar.remove()
+            progressColumn.text("File could not be uploaded")
             console.log $("Message", xhr.responseXML).text()
 
       xhr.open "POST", endpoint, true
