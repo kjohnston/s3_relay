@@ -48,15 +48,16 @@ uploadFile = (form, file) ->
 
       uuid = data.uuid
 
-      uploadList = $(".upload-list", form)
+      uploadList = $(".s3r-upload-list", form)
       unless uploadList.length > 0
-        form.append("<table class='upload-list'></table>")
-        uploadList = $(".upload-list", form)
+        form.append("<table class='s3r-upload-list'></table>")
+        uploadList = $(".s3r-upload-list", form)
 
-      uploadList.append("<tr id='#{uuid}'><td class='file-url'>#{fileName}</td><td class='progress'><div class='bar'><div class='meter'></div></div></td></tr>")
-      fileColumn = $(".upload-list ##{uuid} .file-url", form)
-      progressBar = $(".upload-list ##{uuid} .bar", form)
-      progressMeter = $(".upload-list ##{uuid} .meter", form)
+      uploadList.append("<tr id='#{uuid}'><td class='s3r-file-url'>#{fileName}</td><td class='s3r-progress'><div class='s3r-bar'><div class='s3r-meter'></div></div></td></tr>")
+      fileColumn = $(".s3r-upload-list ##{uuid} .s3r-file-url", form)
+      progressColumn = $(".s3r-upload-list ##{uuid} .s3r-progress", form)
+      progressBar = $(".s3r-bar", progressColumn)
+      progressMeter = $(".s3r-meter", progressColumn)
 
       xhr.upload.addEventListener "progress", (ev) ->
         percentage = ((ev.position / ev.totalSize) * 100.0).toFixed(0)

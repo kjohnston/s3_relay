@@ -1,27 +1,27 @@
-table {
+.s3r-upload-list {
   border: 1px solid #ccc;
   border-collapse: collapse;
   margin: 15px 0;
 }
 
-td {
+.s3r-upload-list td {
   border-bottom: 1px solid #ccc;
   padding: .2em;
   width: 150px;
 }
 
-.file-url {
+.s3r-file-url {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.bar {
+.s3r-bar {
   background-color: #eee;
   height: 15px;
   width: 150px;
 }
 
-.meter {
+.s3r-meter {
   background-color: green;
   height: 15px;
 }
