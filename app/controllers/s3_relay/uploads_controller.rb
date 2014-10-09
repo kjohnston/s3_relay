@@ -5,11 +5,17 @@ class S3Relay::UploadsController < ApplicationController
   end
 
   def create
-    uuid        = params[:uuid]
-    public_url  = params[:public_url]
-    private_url = S3Relay::PrivateUrl.new(public_url).generate
+    @upload = S3Relay::Upload.new(
+      uuid:       params[:uuid],
+      filename:   params[:filename],
+      public_url: params[:public_url]
+    )
 
-    render json: { private_url: private_url }
+    if @upload.save
+      render json: { private_url: @upload.private_url }
+    else
+      render json: { errors: @upload.errors }
+    end
   end
 
 end
