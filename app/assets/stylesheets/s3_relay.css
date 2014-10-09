@@ -17,11 +17,13 @@
 
 .s3r-bar {
   background-color: #eee;
+  border-radius: 3px;
   height: 15px;
   width: 180px;
 }
 
 .s3r-meter {
-  background-color: green;
+  background-color: #43ac6a;
+  border-radius: 3px;
   height: 15px;
 }
