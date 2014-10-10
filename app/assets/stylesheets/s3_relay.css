@@ -11,8 +11,11 @@
 }
 
 .s3r-file-url {
+  height: 1em;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 180px;
 }
 
 .s3r-bar {

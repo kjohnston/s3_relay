@@ -55,7 +55,7 @@ uploadFile = (form, file) ->
         form.append("<table class='s3r-upload-list'></table>")
         uploadList = $(".s3r-upload-list", form)
 
-      uploadList.append("<tr id='#{uuid}'><td class='s3r-file-url'>#{fileName}</td><td class='s3r-progress'><div class='s3r-bar'><div class='s3r-meter'></div></div></td></tr>")
+      uploadList.append("<tr id='#{uuid}'><td><div class='s3r-file-url'>#{fileName}</div></td><td class='s3r-progress'><div class='s3r-bar'><div class='s3r-meter'></div></div></td></tr>")
       fileColumn = $(".s3r-upload-list ##{uuid} .s3r-file-url", form)
       progressColumn = $(".s3r-upload-list ##{uuid} .s3r-progress", form)
       progressBar = $(".s3r-bar", progressColumn)
