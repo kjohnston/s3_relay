@@ -1,6 +1,8 @@
 module S3Relay
   class Upload < ActiveRecord::Base
 
+    belongs_to :parent, polymorphic: true
+
     validates :uuid,        presence: true, uniqueness: true
     validates :filename,    presence: true
     validates :public_url,  presence: true
@@ -8,16 +10,36 @@ module S3Relay
 
     after_initialize :finalize, on: :create
 
-    def self.uploaded
-      where(state: "uploaded")
+    def self.pending
+      where(state: "pending")
     end
 
-    def self.processed
+    def self.locked
       where(state: "processed")
     end
 
-    def mark_processed!
-      update_attributes(state: "processed", processed_at: Time.now)
+    def self.imported
+      where(state: "imported")
+    end
+
+    def pending?
+      state == "pending"
+    end
+
+    def locked?
+      state == "locked"
+    end
+
+    def imported?
+      state == "imported"
+    end
+
+    def mark_locked!
+      update_attributes(state: "locked", locked_at: Time.now)
+    end
+
+    def mark_imported!
+      update_attributes(state: "imported", imported_at: Time.now)
     end
 
     def private_url
@@ -27,7 +49,7 @@ module S3Relay
     private
 
     def finalize
-      self.state       = "uploaded"
+      self.state       = "pending"
       self.uploaded_at = Time.now
     end
 
