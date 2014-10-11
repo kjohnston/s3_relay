@@ -22,13 +22,13 @@ saveUrl = (uuid, filename, public_url) ->
 
   return private_url
 
-uploadFiles = (form) ->
-  fileInput = $("input[type='file']", form)
+uploadFiles = (container) ->
+  fileInput = $("input.s3r-field", container)
   files = fileInput.get(0).files
-  uploadFile(form, file) for file in files
+  uploadFile(container, file) for file in files
   fileInput.val("")
 
-uploadFile = (form, file) ->
+uploadFile = (container, file) ->
   fileName = file.name
 
   $.ajax
@@ -50,14 +50,10 @@ uploadFile = (form, file) ->
 
       uuid = data.uuid
 
-      uploadList = $(".s3r-upload-list", form)
-      unless uploadList.length > 0
-        form.append("<table class='s3r-upload-list'></table>")
-        uploadList = $(".s3r-upload-list", form)
-
+      uploadList = $(".s3r-upload-list", container)
       uploadList.append("<tr id='#{uuid}'><td><div class='s3r-file-url'>#{fileName}</div></td><td class='s3r-progress'><div class='s3r-bar'><div class='s3r-meter'></div></div></td></tr>")
-      fileColumn = $(".s3r-upload-list ##{uuid} .s3r-file-url", form)
-      progressColumn = $(".s3r-upload-list ##{uuid} .s3r-progress", form)
+      fileColumn = $(".s3r-upload-list ##{uuid} .s3r-file-url", container)
+      progressColumn = $(".s3r-upload-list ##{uuid} .s3r-progress", container)
       progressBar = $(".s3r-bar", progressColumn)
       progressMeter = $(".s3r-meter", progressColumn)
 
@@ -78,6 +74,10 @@ uploadFile = (form, file) ->
             else
               fileColumn.html("<a href='#{privateUrl}'>#{fileName}</a>")
 
+              virtualAttr = "#{container.data('parent')}[new_#{container.data('attribute')}_uuids]"
+              hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
+              container.append(hiddenField)
+
           else
             displayFailedUpload(progressColumn)
             console.log $("Message", xhr.responseXML).text()
@@ -90,5 +90,5 @@ uploadFile = (form, file) ->
 
 jQuery ->
 
-  $("form.s3_relay").on "change", "input[type='file']", ->
-    uploadFiles($(this).parent("form"))
+  $(document).on "change", ".s3r-field", ->
+    uploadFiles($(this).parent())
