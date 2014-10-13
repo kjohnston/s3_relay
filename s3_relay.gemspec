@@ -18,4 +18,10 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "coffee-rails"
+  s.add_dependency "rails"
+
+  s.add_development_dependency "guard-minitest", "~> 2.3.2"
+  s.add_development_dependency "minitest-rails", "~> 2.1.0"
+  s.add_development_dependency "mocha",          "~> 1.1.0"
+  s.add_development_dependency "simplecov",      "~> 0.9.1"
 end
