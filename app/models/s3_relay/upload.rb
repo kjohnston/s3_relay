@@ -43,7 +43,7 @@ module S3Relay
     end
 
     def private_url
-      S3Relay::PrivateUrl.new(public_url).generate
+      S3Relay::PrivateUrl.new(uuid, filename).generate
     end
 
     private

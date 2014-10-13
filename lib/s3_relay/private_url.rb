@@ -3,13 +3,14 @@ module S3Relay
 
     attr_reader :expires, :path
 
-    def initialize(public_url, options={})
-      @path    = URI.parse(public_url).path
+    def initialize(uuid, file, options={})
+      filename = URI.encode(file).gsub("+", "%2B")
+      @path    = [uuid, filename].join("/")
       @expires = (options[:expires] || 10.minutes.from_now).to_i
     end
 
     def generate
-      "#{endpoint}#{path}?#{params}"
+      "#{endpoint}/#{path}?#{params}"
     end
 
     private
@@ -23,7 +24,7 @@ module S3Relay
     end
 
     def signature
-      string = "GET\n\n\n#{expires}\n/#{BUCKET}#{path}"
+      string = "GET\n\n\n#{expires}\n/#{BUCKET}/#{path}"
       hmac   = OpenSSL::HMAC.digest(digest, SECRET_ACCESS_KEY, string)
       CGI.escape(Base64.encode64(hmac).strip)
     end
