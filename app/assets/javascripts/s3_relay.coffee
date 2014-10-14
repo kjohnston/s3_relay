@@ -46,6 +46,7 @@ uploadFile = (container, file) ->
       formData.append("acl", data.acl)
       formData.append("policy", data.policy)
       formData.append("signature", data.signature)
+      formData.append("content-type", file.type)
       formData.append("file", file)
 
       uuid = data.uuid

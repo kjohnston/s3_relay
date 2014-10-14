@@ -42,6 +42,7 @@ module S3Relay
           { "acl" => ACL },
           { "x-amz-server-side-encryption" => "AES256" },
           { "success_action_status" => "201" },
+          ["starts-with", "$content-type", ""],
           ["starts-with", "$key", "#{uuid}/"]
         ]
       }
