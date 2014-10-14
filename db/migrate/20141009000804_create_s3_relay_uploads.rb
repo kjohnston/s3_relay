@@ -5,7 +5,7 @@ class CreateS3RelayUploads < ActiveRecord::Migration
       t.integer :parent_id
       t.binary :uuid, length: 16
       t.text :filename
-      t.text :public_url
+      t.string :content_type
       t.string :state
       t.json :data
       t.datetime :uploaded_at
