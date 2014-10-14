@@ -94,4 +94,10 @@ uploadFile = (container, file) ->
 jQuery ->
 
   $(document).on "change", ".s3r-field", ->
-    uploadFiles($(this).parent())
+    $this = $(this)
+
+    if !!window.FormData
+      uploadFiles($this.parent())
+    else
+      $this.hide()
+      $this.parent().append("<p>Your browser can't handle file uploads, please switch to <a href='http://google.com/chrome'>Google Chrome</a>.</p>")
