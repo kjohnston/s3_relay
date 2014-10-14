@@ -4,7 +4,7 @@ displayFailedUpload = (progressColumn=null) ->
   else
     alert("File could not be uploaded")
 
-saveUrl = (uuid, filename, public_url) ->
+saveUrl = (uuid, filename, content_type, public_url) ->
   private_url = null
 
   $.ajax
@@ -14,6 +14,7 @@ saveUrl = (uuid, filename, public_url) ->
     data:
       uuid: uuid
       filename: filename
+      content_type: content_type
       public_url: public_url
     success: (data, status, xhr) ->
       private_url = data.private_url
@@ -67,8 +68,9 @@ uploadFile = (container, file) ->
           progressBar.remove()
 
           if xhr.status == 201
+            contentType = file.type
             publicUrl = $("Location", xhr.responseXML).text()
-            privateUrl = saveUrl(uuid, fileName, publicUrl)
+            privateUrl = saveUrl(uuid, fileName, contentType, publicUrl)
 
             if privateUrl == null
               displayFailedUpload(progressColumn)

@@ -6,9 +6,9 @@ class S3Relay::UploadsController < ApplicationController
 
   def create
     @upload = S3Relay::Upload.new(
-      uuid:       params[:uuid],
-      filename:   params[:filename],
-      public_url: params[:public_url]
+      uuid:         params[:uuid],
+      filename:     params[:filename],
+      content_type: params[:content_type]
     )
 
     if @upload.save

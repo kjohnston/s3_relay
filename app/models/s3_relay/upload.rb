@@ -3,10 +3,10 @@ module S3Relay
 
     belongs_to :parent, polymorphic: true
 
-    validates :uuid,        presence: true, uniqueness: true
-    validates :filename,    presence: true
-    validates :public_url,  presence: true
-    validates :uploaded_at, presence: true
+    validates :uuid,         presence: true, uniqueness: true
+    validates :filename,     presence: true
+    validates :content_type, presence: true
+    validates :uploaded_at,  presence: true
 
     after_initialize :finalize, on: :create
 
