@@ -6,12 +6,11 @@
 
 .s3r-upload-list td {
   border-bottom: 1px solid #ccc;
-  padding: .2em;
+  padding: .5em;
   width: 180px;
 }
 
 .s3r-file-url {
-  height: 1em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
