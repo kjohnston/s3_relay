@@ -15,7 +15,7 @@ module S3Relay
     end
 
     def self.locked
-      where(state: "processed")
+      where(state: "locked")
     end
 
     def self.imported

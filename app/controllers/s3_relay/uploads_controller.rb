@@ -18,4 +18,11 @@ class S3Relay::UploadsController < ApplicationController
     end
   end
 
+  def associate
+    klass = params[:parent_type].classify
+    @object = "::#{klass}".constantize.find(params[:parent_id])
+    @object.new_file_uploads_uuids = [params[:uuid]]
+    head @object.save ? 200 : 422
+  end
+
 end

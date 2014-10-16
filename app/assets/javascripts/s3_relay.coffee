@@ -53,7 +53,7 @@ uploadFile = (container, file) ->
       uuid = data.uuid
 
       uploadList = $(".s3r-upload-list", container)
-      uploadList.append("<tr id='#{uuid}'><td><div class='s3r-file-url'>#{fileName}</div></td><td class='s3r-progress'><div class='s3r-bar' style='display: none;'><div class='s3r-meter'></div></div></td></tr>")
+      uploadList.prepend("<tr id='#{uuid}'><td><div class='s3r-file-url'>#{fileName}</div></td><td class='s3r-progress'><div class='s3r-bar' style='display: none;'><div class='s3r-meter'></div></div></td></tr>")
       fileColumn = $(".s3r-upload-list ##{uuid} .s3r-file-url", container)
       progressColumn = $(".s3r-upload-list ##{uuid} .s3r-progress", container)
       progressBar = $(".s3r-bar", progressColumn)
@@ -85,6 +85,19 @@ uploadFile = (container, file) ->
               virtualAttr = "#{container.data('parent')}[new_#{container.data('attribute')}_uuids]"
               hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
               container.append(hiddenField)
+
+              $.ajax
+                type: "POST",
+                url: "/s3_relay/uploads/associate"
+                data:
+                  stuff: "asdf"
+                  parent_type: container.data('parentType')
+                  parent_id: container.data('parentId')
+                  uuid: uuid
+                success: (data, status, xhr) ->
+                  console.log "success"
+                error: (response) ->
+                  console.log response
 
           else
             displayFailedUpload(progressColumn)
