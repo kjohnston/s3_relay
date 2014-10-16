@@ -26,9 +26,9 @@ module S3Relay
       state == "pending"
     end
 
-    def locked?
-      state == "locked"
-    end
+    # def locked?
+    #   state == "locked"
+    # end
 
     def imported?
       state == "imported"
