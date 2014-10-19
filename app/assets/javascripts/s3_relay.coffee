@@ -86,7 +86,7 @@ uploadFile = (container, file) ->
             else
               fileColumn.html("<a href='#{privateUrl}'>#{fileName}</a>")
 
-              virtualAttr = "#{container.data('parent_type')}[new_#{container.data('association')}_uuids]"
+              virtualAttr = "#{container.data('parentType')}[new_#{container.data('association')}_uuids]"
               hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
               container.append(hiddenField)
 
