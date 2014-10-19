@@ -4,24 +4,27 @@ displayFailedUpload = (progressColumn=null) ->
   else
     alert("File could not be uploaded")
 
-saveUrl = (uuid, filename, content_type, public_url) ->
-  private_url = null
+saveUrl = (container, uuid, filename, contentType, publicUrl) ->
+  privateUrl = null
 
   $.ajax
     type: "POST"
     url: "/s3_relay/uploads"
     async: false
     data:
+      parent_type: container.data("parentType")
+      parent_id: container.data("parentId")
+      association: container.data("association")
       uuid: uuid
       filename: filename
-      content_type: content_type
-      public_url: public_url
+      content_type: contentType
+      public_url: publicUrl
     success: (data, status, xhr) ->
-      private_url = data.private_url
+      privateUrl = data.private_url
     error: (xhr) ->
       console.log xhr.responseText
 
-  return private_url
+  return privateUrl
 
 uploadFiles = (container) ->
   fileInput = $("input.s3r-field", container)
@@ -35,6 +38,7 @@ uploadFile = (container, file) ->
   $.ajax
     type: "GET"
     url: "/s3_relay/uploads/new"
+    async: false
     success: (data, status, xhr) ->
       formData = new FormData()
       xhr = new XMLHttpRequest()
@@ -75,29 +79,16 @@ uploadFile = (container, file) ->
           if xhr.status == 201
             contentType = file.type
             publicUrl = $("Location", xhr.responseXML).text()
-            privateUrl = saveUrl(uuid, fileName, contentType, publicUrl)
+            privateUrl = saveUrl(container, uuid, fileName, contentType, publicUrl)
 
             if privateUrl == null
               displayFailedUpload(progressColumn)
             else
               fileColumn.html("<a href='#{privateUrl}'>#{fileName}</a>")
 
-              virtualAttr = "#{container.data('parent')}[new_#{container.data('attribute')}_uuids]"
+              virtualAttr = "#{container.data('parent_type')}[new_#{container.data('association')}_uuids]"
               hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
               container.append(hiddenField)
-
-              $.ajax
-                type: "POST",
-                url: "/s3_relay/uploads/associate"
-                data:
-                  stuff: "asdf"
-                  parent_type: container.data('parentType')
-                  parent_id: container.data('parentId')
-                  uuid: uuid
-                success: (data, status, xhr) ->
-                  console.log "success"
-                error: (response) ->
-                  console.log response
 
           else
             displayFailedUpload(progressColumn)

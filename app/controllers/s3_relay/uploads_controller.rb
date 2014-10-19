@@ -5,11 +5,7 @@ class S3Relay::UploadsController < ApplicationController
   end
 
   def create
-    @upload = S3Relay::Upload.new(
-      uuid:         params[:uuid],
-      filename:     params[:filename],
-      content_type: params[:content_type]
-    )
+    @upload = S3Relay::Upload.new(upload_attrs)
 
     if @upload.save
       render json: { private_url: @upload.private_url }, status: 201
@@ -18,11 +14,26 @@ class S3Relay::UploadsController < ApplicationController
     end
   end
 
-  def associate
-    klass = params[:parent_type].classify
-    @object = "::#{klass}".constantize.find(params[:parent_id])
-    @object.new_file_uploads_uuids = [params[:uuid]]
-    head @object.save ? 200 : 422
+  protected
+
+  def parent_attrs
+    parent_type = params[:parent_type]
+    parent_id   = params[:parent_id]
+    association = params[:association]
+
+    begin
+      public_send("#{parent_type.underscore.downcase}_#{association}_params")
+    rescue
+      { parent_type: parent_type, parent_id: parent_id }
+    end
+  end
+
+  def upload_attrs
+    {
+      uuid:         params[:uuid],
+      filename:     params[:filename],
+      content_type: params[:content_type]
+    }.merge(parent_attrs)
   end
 
 end
