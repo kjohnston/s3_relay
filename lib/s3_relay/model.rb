@@ -20,7 +20,7 @@ module S3Relay
         define_method attribute do
           S3Relay::Upload
             .where(parent_type: self.class.to_s, parent_id: self.id)
-            .order("uploaded_at DESC").limit(1)
+            .order("pending_at DESC").limit(1)
         end
       end
 

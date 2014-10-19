@@ -6,7 +6,7 @@ module S3Relay
     validates :uuid,         presence: true, uniqueness: true
     validates :filename,     presence: true
     validates :content_type, presence: true
-    validates :uploaded_at,  presence: true
+    validates :pending_at,   presence: true
 
     after_initialize :finalize
 
@@ -37,8 +37,8 @@ module S3Relay
     private
 
     def finalize
-      self.state       ||= "pending"
-      self.uploaded_at ||= Time.now
+      self.state      ||= "pending"
+      self.pending_at ||= Time.now
     end
 
   end
