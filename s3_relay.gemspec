@@ -1,9 +1,7 @@
 $:.push File.expand_path("../lib", __FILE__)
 
-# Maintain your gem's version:
 require "s3_relay/version"
 
-# Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "s3_relay"
   s.version     = S3Relay::VERSION
@@ -23,5 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "guard-minitest", "~> 2.3.2"
   s.add_development_dependency "minitest-rails", "~> 2.1.0"
   s.add_development_dependency "mocha",          "~> 1.1.0"
+  s.add_development_dependency "pg",             "~> 0.17.1"
   s.add_development_dependency "simplecov",      "~> 0.9.1"
+  s.add_development_dependency "thor"  # Bundler requirement
 end
