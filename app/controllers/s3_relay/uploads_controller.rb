@@ -17,14 +17,15 @@ class S3Relay::UploadsController < ApplicationController
   protected
 
   def parent_attrs
-    parent_type = params[:parent_type]
-    parent_id   = params[:parent_id]
-    association = params[:association]
+    type = params[:parent_type].try(:classify)
+    id   = params[:parent_id]
+
+    return {} unless type.present? && id.present? && type.constantize.find(id)
 
     begin
-      public_send("#{parent_type.underscore.downcase}_#{association}_params")
-    rescue
-      { parent_type: parent_type, parent_id: parent_id }
+      public_send("#{type.underscore.downcase}_#{params[:association]}_params")
+    rescue NoMethodError
+      { parent_type: type, parent_id: id }
     end
   end
 
