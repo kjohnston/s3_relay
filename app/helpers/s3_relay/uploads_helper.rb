@@ -5,7 +5,7 @@ module S3Relay
       file_field     = file_field_tag(:file, opts.merge(class: "s3r-field"))
       progress_table = content_tag(:table, "", class: "s3r-upload-list")
       content        = [file_field, progress_table].join
-      parent_type    = parent.class.to_s.downcase.underscore
+      parent_type    = parent.class.to_s.underscore.downcase
 
       content_tag(:div, raw(content),
         {
