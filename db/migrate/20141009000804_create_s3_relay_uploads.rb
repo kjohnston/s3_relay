@@ -7,9 +7,8 @@ class CreateS3RelayUploads < ActiveRecord::Migration
       t.text :filename
       t.string :content_type
       t.string :state
-      t.json :data
+      t.column :data, :json
       t.datetime :uploaded_at
-      t.datetime :locked_at
       t.datetime :imported_at
 
       t.timestamps
