@@ -8,14 +8,10 @@ module S3Relay
     validates :content_type, presence: true
     validates :uploaded_at,  presence: true
 
-    after_initialize :finalize, on: :create
+    after_initialize :finalize
 
     def self.pending
       where(state: "pending")
-    end
-
-    def self.locked
-      where(state: "locked")
     end
 
     def self.imported
@@ -26,16 +22,8 @@ module S3Relay
       state == "pending"
     end
 
-    # def locked?
-    #   state == "locked"
-    # end
-
     def imported?
       state == "imported"
-    end
-
-    def mark_locked!
-      update_attributes(state: "locked", locked_at: Time.now)
     end
 
     def mark_imported!
@@ -49,8 +37,8 @@ module S3Relay
     private
 
     def finalize
-      self.state       = "pending"
-      self.uploaded_at = Time.now
+      self.state       ||= "pending"
+      self.uploaded_at ||= Time.now
     end
 
   end
