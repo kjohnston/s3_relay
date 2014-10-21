@@ -4,6 +4,7 @@ module S3Relay
     belongs_to :parent, polymorphic: true
 
     validates :uuid,         presence: true, uniqueness: true
+    validates :upload_type,  presence: true
     validates :filename,     presence: true
     validates :content_type, presence: true
     validates :pending_at,   presence: true

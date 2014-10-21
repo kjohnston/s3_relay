@@ -11,15 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141009000804) do
+ActiveRecord::Schema.define(version: 20141021002149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "products", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "s3_relay_uploads", force: true do |t|
+    t.binary   "uuid"
     t.string   "parent_type"
     t.integer  "parent_id"
-    t.binary   "uuid"
+    t.string   "upload_type"
     t.text     "filename"
     t.string   "content_type"
     t.string   "state"

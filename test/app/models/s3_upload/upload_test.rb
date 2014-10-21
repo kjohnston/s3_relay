@@ -28,6 +28,13 @@ describe S3Relay::Upload do
       end
     end
 
+    describe "upload_type" do
+      it "validates presence" do
+        @upload.valid?
+        @upload.errors[:upload_type].must_include("can't be blank")
+      end
+    end
+
     describe "filename" do
       it "validates presence" do
         @upload.valid?
