@@ -2,34 +2,48 @@ module S3Relay
   module Model
 
     def s3_relay(attribute, has_many=false)
-
-      virtual_attribute = "new_#{attribute}_uuids"
-
-      attr_accessor virtual_attribute
+      upload_type = attribute.to_s.classify
 
       if has_many
         has_many attribute, as: :parent, class_name: "S3Relay::Upload"
 
         define_method attribute do
           S3Relay::Upload
-            .where(parent_type: self.class.to_s, parent_id: self.id)
+            .where(
+              parent_type: self.class.to_s,
+              parent_id:   self.id,
+              upload_type: upload_type
+            )
         end
+
+        virtual_attribute = "new_#{attribute}_uuids"
       else
         has_one attribute, as: :parent, class_name: "S3Relay::Upload"
 
         define_method attribute do
           S3Relay::Upload
-            .where(parent_type: self.class.to_s, parent_id: self.id)
-            .order("pending_at DESC").limit(1)
+            .where(
+              parent_type: self.class.to_s,
+              parent_id:   self.id,
+              upload_type: upload_type
+            )
+            .order("pending_at DESC").last
         end
+
+        virtual_attribute = "new_#{attribute}_uuid"
       end
+
+      attr_accessor virtual_attribute
 
       association_method = "associate_#{attribute}"
 
-      after_save "associate_#{attribute}"
+      after_save association_method
 
       define_method association_method do
-        S3Relay::Upload.where(uuid: send(virtual_attribute))
+        new_uuids = send(virtual_attribute)
+        return if new_uuids.blank?
+
+        S3Relay::Upload.where(uuid: new_uuids, upload_type: upload_type)
           .update_all(parent_type: self.class.to_s, parent_id: self.id)
       end
 
