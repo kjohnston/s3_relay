@@ -17,9 +17,11 @@ end
 ENV["RAILS_ENV"] = "test"
 require File.expand_path("../dummy/config/environment",  __FILE__)
 
+Dir[File.join("./test/factories/*.rb")].sort.each { |f| require f }
+
 require "minitest/autorun"
 require "rails/generators"
 require "minitest/rails"
 require "minitest/pride"
 
-Dir[File.join("./test/support/**/*.rb")].sort.each { |f| require f }
+Dir[File.join("./test/support/*.rb")].sort.each { |f| require f }
