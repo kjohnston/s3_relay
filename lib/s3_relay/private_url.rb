@@ -17,15 +17,15 @@ module S3Relay
 
     def params
       [
-        "AWSAccessKeyId=#{ACCESS_KEY_ID}",
+        "AWSAccessKeyId=#{access_key_id}",
         "Expires=#{expires}",
         "Signature=#{signature}"
       ].join("&")
     end
 
     def signature
-      string = "GET\n\n\n#{expires}\n/#{BUCKET}/#{path}"
-      hmac   = OpenSSL::HMAC.digest(digest, SECRET_ACCESS_KEY, string)
+      string = "GET\n\n\n#{expires}\n/#{bucket}/#{path}"
+      hmac   = OpenSSL::HMAC.digest(digest, secret_access_key, string)
       CGI.escape(Base64.encode64(hmac).strip)
     end
 

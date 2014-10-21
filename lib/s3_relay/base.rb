@@ -1,16 +1,30 @@
 module S3Relay
   class Base
 
-    ACCESS_KEY_ID     = ENV["S3_RELAY_ACCESS_KEY_ID"]
-    SECRET_ACCESS_KEY = ENV["S3_RELAY_SECRET_ACCESS_KEY"]
-    REGION            = ENV["S3_RELAY_REGION"]
-    BUCKET            = ENV["S3_RELAY_BUCKET"]
-    ACL               = ENV["S3_RELAY_ACL"]
-
     private
 
+    def access_key_id
+      ENV["S3_RELAY_ACCESS_KEY_ID"]
+    end
+
+    def secret_access_key
+      ENV["S3_RELAY_SECRET_ACCESS_KEY"]
+    end
+
+    def region
+      ENV["S3_RELAY_REGION"]
+    end
+
+    def bucket
+      ENV["S3_RELAY_BUCKET"]
+    end
+
+    def acl
+      ENV["S3_RELAY_ACL"]
+    end
+
     def endpoint
-      "https://#{BUCKET}.s3-#{REGION}.amazonaws.com"
+      "https://#{bucket}.s3-#{region}.amazonaws.com"
     end
 
     def digest

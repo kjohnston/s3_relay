@@ -22,24 +22,24 @@ module S3Relay
 
     def fields
       {
-        "AWSAccessKeyID"               => ACCESS_KEY_ID,
+        "AWSAccessKeyID"               => access_key_id,
         "x-amz-server-side-encryption" => "AES256",
         "key"                          => "#{uuid}/${filename}",
         "success_action_status"        => "201",
-        "acl"                          => ACL
+        "acl"                          => acl
       }
     end
 
     def hmac
-      lambda { |data| OpenSSL::HMAC.digest(digest, SECRET_ACCESS_KEY, data) }
+      lambda { |data| OpenSSL::HMAC.digest(digest, secret_access_key, data) }
     end
 
     def policy_document
       {
         "expiration" => expires,
         "conditions" => [
-          { "bucket" => BUCKET },
-          { "acl" => ACL },
+          { "bucket" => bucket },
+          { "acl" => acl },
           { "x-amz-server-side-encryption" => "AES256" },
           { "success_action_status" => "201" },
           ["starts-with", "$content-type", ""],
