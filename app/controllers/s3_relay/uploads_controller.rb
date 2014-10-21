@@ -20,7 +20,8 @@ class S3Relay::UploadsController < ApplicationController
     type = params[:parent_type].try(:classify)
     id   = params[:parent_id]
 
-    return {} unless type.present? && id.present? && type.constantize.find(id)
+    return {} unless type.present? && id.present? &&
+      type.constantize.find_by_id(id)
 
     begin
       public_send("#{type.underscore.downcase}_#{params[:association]}_params")

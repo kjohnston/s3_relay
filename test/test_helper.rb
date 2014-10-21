@@ -21,6 +21,7 @@ Dir[File.join("./test/factories/*.rb")].sort.each { |f| require f }
 
 require "minitest/autorun"
 require "rails/generators"
+require "rails/test_help"
 require "minitest/rails"
 require "minitest/pride"
 
