@@ -16,7 +16,8 @@ Direct uploads to S3 and ingestion by your Rails app.
 * Add `gem "s3_relay"` to your Gemfile and run `bundle`.
 * Add migrations to your app and run them with `rake s3_relay:install:migrations db:migrate`.
 * Add `mount S3Relay::Engine => "/s3_relay"` to the top of your routes file.
-* Add `//= require s3_relay` to your JavaScript manifest.
+* Add `require s3_relay` to your JavaScript manifest.
+* Add `require s3_relay` to your Style Sheet manifest.
 * Add the following environment variables to your app:
 
 ```
