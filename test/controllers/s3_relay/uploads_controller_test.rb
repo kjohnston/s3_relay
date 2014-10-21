@@ -92,6 +92,27 @@ module S3Relay
             end
           end
 
+          describe "with a current_user" do
+            before do
+              @user = OpenStruct.new(id: 123)
+              @controller.stubs(:current_user).returns(@user)
+            end
+
+            it "associates the upload with the user" do
+              assert_difference "S3Relay::Upload.count", 1 do
+                post :create,
+                  association:  "photo_uploads",
+                  uuid:         SecureRandom.uuid,
+                  filename:     "cat.png",
+                  content_type: "image/png"
+              end
+
+              assert_response 201
+
+              assigns[:upload].user_id.must_equal @user.id
+            end
+          end
+
         end
       end
 

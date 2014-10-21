@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20141021002149) do
 
   create_table "s3_relay_uploads", force: true do |t|
     t.binary   "uuid"
+    t.integer  "user_id"
     t.string   "parent_type"
     t.integer  "parent_id"
     t.string   "upload_type"

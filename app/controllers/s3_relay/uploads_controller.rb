@@ -31,12 +31,19 @@ class S3Relay::UploadsController < ApplicationController
   end
 
   def upload_attrs
-    {
+    attrs = {
       upload_type:  params[:association].try(:classify),
       uuid:         params[:uuid],
       filename:     params[:filename],
       content_type: params[:content_type]
-    }.merge(parent_attrs)
+    }
+
+    attrs.merge!(parent_attrs)
+    attrs.merge!(user_attrs)
+  end
+
+  def user_attrs
+    respond_to?(:current_user) ? { user_id: current_user.id } : {}
   end
 
 end
