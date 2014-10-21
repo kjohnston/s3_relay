@@ -31,6 +31,7 @@ class S3Relay::UploadsController < ApplicationController
 
   def upload_attrs
     {
+      upload_type:  params[:association].try(:classify),
       uuid:         params[:uuid],
       filename:     params[:filename],
       content_type: params[:content_type]
