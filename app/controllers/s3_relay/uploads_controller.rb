@@ -1,5 +1,8 @@
 class S3Relay::UploadsController < ApplicationController
 
+  before_filter :authenticate
+  skip_before_filter :verify_authenticity_token
+
   def new
     render json: S3Relay::UploadPresigner.new.form_data
   end
@@ -15,6 +18,12 @@ class S3Relay::UploadsController < ApplicationController
   end
 
   protected
+
+  def authenticate
+    if respond_to?(:authenticate_for_s3_relay)
+      authenticate_for_s3_relay
+    end
+  end
 
   def parent_attrs
     type = params[:parent_type].try(:classify)
