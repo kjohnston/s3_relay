@@ -9,7 +9,8 @@ Gem::Specification.new do |s|
   s.email       = ["kjohnston.ca@gmail.com"]
   s.homepage    = "http://github.com/kjohnston/s3_relay"
   s.summary     = "Direct uploads to S3 and ingestion by your Rails app."
-  s.description = "Direct uploads to S3 and ingestion by your Rails app."
+  s.description = "Enables direct file uploads to Amazon S3 and provides a flexible pattern for
+your Rails app to asynchronously ingest the files."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
