@@ -43,7 +43,11 @@ class S3Relay::UploadsController < ApplicationController
   end
 
   def user_attrs
-    respond_to?(:current_user) ? { user_id: current_user.id } : {}
+    if respond_to?(:current_user) && (id = current_user.try(:id))
+      { user_id: id }
+    else
+      {}
+    end
   end
 
 end
