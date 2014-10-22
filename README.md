@@ -62,6 +62,26 @@ minimum requirements:
 
 See a demo application using `s3_relay` [here](https://github.com/kjohnston/s3_relay-demo).
 
+## Configuring CORS
+
+Edit your S3 bucket's CORS Configuration to resemble the following:
+
+```
+<CORSConfiguration>
+  <CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedHeader>Content-Type</AllowedHeader>
+    <AllowedHeader>origin</AllowedHeader>
+  </CORSRule>
+</CORSConfiguration>
+```
+
+Note: The example above is a starting point for development.  Obviously, you
+don't want to permit requests from any domain to upload to your S3 bucket.
+Please see the [AWS Documentation](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html)
+to learn how to lock it down further.
+
 ## Installation
 
 * Add `gem "s3_relay"` to your Gemfile and run `bundle`.
@@ -147,25 +167,27 @@ whenever there may be new uploads to process:
 Resque.enqueue(ProductPhotoImporter, product.id)
 ```
 
-## Configuring CORS
+### Restricting the objects uploads can be associated with
 
-Edit your S3 bucket's CORS Configuration to resemble the following:
+Remember the time when that guy found a way to a submit Github form in such a
+way that it linked a new SSH key he provided to DHH's user record?  No bueno.
+Don't let your users attach files to objects they don't have access to.
 
+You can prevent this by defining a method in ApplicationController that
+filters out the parent object params passed during upload creation if your logic
+finds that the user doesn't have access to the parent object in question.  Ex:
+
+```ruby
+def order_file_uploads_params(parent)
+  if parent.user == current_user
+    # Yep, that's your order, you can add files to it
+    { parent: parent }
+  else
+    # Nope, you're trying to add a file to someone else's order, or whatever
+    { }
+  end
+end
 ```
-<CORSConfiguration>
-  <CORSRule>
-    <AllowedOrigin>*</AllowedOrigin>
-    <AllowedMethod>POST</AllowedMethod>
-    <AllowedHeader>Content-Type</AllowedHeader>
-    <AllowedHeader>origin</AllowedHeader>
-  </CORSRule>
-</CORSConfiguration>
-```
-
-Note: The example above is a starting point for development.  Obviously, you
-don't want to permit requests from any domain to upload to your S3 bucket.
-Please see the [AWS Documentation](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html)
-to learn how to lock it down further.
 
 ## Contributing
 
