@@ -1,6 +1,7 @@
 # s3_relay
 
-Direct uploads to S3 and ingestion by your Rails app.
+Enables direct file uploads to Amazon S3 and provides a flexible pattern for
+your Rails app to asynchronously ingest the files.
 
 ## Overview
 
@@ -29,6 +30,8 @@ app.
 * Files can be uploaded before or after your parent object has been saved.
 * File upload fields can be placed inside or outside of your parent object's
 form.
+* File uploads display completion progress.
+* Boilerplate styling can be used or easily replaced.
 * All uploads are set to private by default, however support for other ACLs
 is in the plans.
 * All uploads are marked for [Server-Side Encryption by AWS](http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingEncryption.html) so that they are encrypted upon
@@ -37,18 +40,27 @@ write to disk.  S3 then decrypts and streams the files as they are downloaded.
 file is permitted or if multiple are.
 * Multiple files can upload concurrently to S3.
 
-## Support
+## Technology & Requirements
+
+Uploads are made possible by use of the `FormData` object, defined in
+[XMLHttpRequest Level 2](http://dev.w3.org/2006/webapi/XMLHttpRequest-2/).
+Many people are broadly referring to this as being provided by HTML5, but
+technically it's part of the aforementioned spec that browsers have been
+adhering to for a couple of major versions now.  Even IE, wuh?
+
+The latest versions of all of the following are ideal, but here are the gem's
+minimum requirements:
 
 * Ruby 1.9.3+
-* Rails 3.1+ or Rails 4.x
-* Modern versions of Chrome, Safari and FireFox
-* IE 10+, however progress bars are disabled
+* Rails 3.1+
+* Modern versions of Chrome, Safari, FireFox or IE 10+
+  * Note: Progress bars are currently disabled in IE
   * Note: IE <= 9 users will be instructed to upgrade their browser upon
   selecting a file
 
 ## Demo
 
-See a demo application using `s3_relay` at [here](https://github.com/kjohnston/s3_relay-demo).
+See a demo application using `s3_relay` [here](https://github.com/kjohnston/s3_relay-demo).
 
 ## Installation
 
@@ -121,7 +133,7 @@ class ProductPhotoImporter
     @product = Product.find(id)
 
     @product.photo_uploads.pending.each do |upload|
-      @product.photos.create(remote_photo_url: upload.private_url)
+      @product.photos.create(remote_file_url: upload.private_url)
       upload.mark_processed!
     end
   end
@@ -150,8 +162,9 @@ Edit your S3 bucket's CORS Configuration to resemble the following:
 </CORSConfiguration>
 ```
 
-Note: The example above is a starting point for development.  Please see the
-[AWS Documentation](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html)
+Note: The example above is a starting point for development.  Obviously, you
+don't want to permit requests from any domain to upload to your S3 bucket.
+Please see the [AWS Documentation](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html)
 to learn how to lock it down further.
 
 ## Contributing
