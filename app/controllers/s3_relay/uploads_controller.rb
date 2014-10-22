@@ -30,12 +30,15 @@ class S3Relay::UploadsController < ApplicationController
     id   = params[:parent_id]
 
     return {} unless type.present? && id.present? &&
-      type.constantize.find_by_id(id)
+      parent = type.constantize.find_by_id(id)
 
     begin
-      public_send("#{type.underscore.downcase}_#{params[:association]}_params")
+      public_send(
+        "#{type.underscore.downcase}_#{params[:association]}_params",
+        parent
+      )
     rescue NoMethodError
-      { parent_type: type, parent_id: id }
+      { parent: parent }
     end
   end
 
