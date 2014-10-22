@@ -78,6 +78,18 @@ class Product < ActiveRecord::Base
 end
 ```
 
+### Restricting uploads to authenticated users
+
+If your app's file uploads need to be restricted to logged in users, simply
+override the following method in your application controller to call any
+authentication method you're currently using.
+
+```ruby
+def authenticate_for_s3_relay
+  authenticate_user!  # Devise example
+end
+```
+
 ### Add virtual attributes to your controller's Strong Parameters config
 
 ```ruby
