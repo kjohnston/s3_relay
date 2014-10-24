@@ -34,8 +34,6 @@ app.
 form.
 * File uploads display completion progress.
 * Boilerplate styling can be used or easily replaced.
-* All uploads are set to private by default, however support for other ACLs
-is in the plans.
 * All uploads are marked for [Server-Side Encryption by AWS](http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingEncryption.html) so that they are encrypted upon
 write to disk.  S3 then decrypts and streams the files as they are downloaded.
 * Models can have multiple types of uploads and specify for each if only one
