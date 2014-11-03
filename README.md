@@ -1,6 +1,7 @@
 # s3_relay
 
 [![Gem Version](https://badge.fury.io/rb/s3_relay.svg)](http://badge.fury.io/rb/s3_relay)
+[![Code Climate](https://codeclimate.com/github/kjohnston/s3_relay/badges/gpa.svg)](https://codeclimate.com/github/kjohnston/s3_relay)
 
 Enables direct file uploads to Amazon S3 and provides a flexible pattern for
 your Rails app to asynchronously ingest the files.
