@@ -155,7 +155,7 @@ class ProductPhotoImporter
 
     @product.photo_uploads.pending.each do |upload|
       @product.photos.create(remote_file_url: upload.private_url)
-      upload.mark_processed!
+      upload.mark_imported!
     end
   end
 end
