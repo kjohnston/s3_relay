@@ -10,6 +10,7 @@ module S3Relay
     validates :pending_at,   presence: true
 
     after_initialize :finalize
+    after_create :notify_parent
 
     def self.pending
       where(state: "pending")
@@ -29,6 +30,14 @@ module S3Relay
 
     def mark_imported!
       update_attributes(state: "imported", imported_at: Time.now)
+    end
+
+    def notify_parent
+      return unless parent.present?
+
+      if parent.respond_to?(:import_upload)
+        parent.import_upload(id)
+      end
     end
 
     def private_url

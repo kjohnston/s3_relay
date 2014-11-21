@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    s3_relay (0.0.1)
+    s3_relay (0.0.2)
       coffee-rails
       rails
 
@@ -55,7 +55,7 @@ GEM
     debugger-linecache (1.2.0)
     docile (1.1.5)
     erubis (2.7.0)
-    execjs (2.2.1)
+    execjs (2.2.2)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.5.0)
@@ -85,7 +85,7 @@ GEM
       mime-types (>= 1.16, < 3)
     metaclass (0.0.4)
     method_source (0.8.2)
-    mime-types (2.4.1)
+    mime-types (2.4.3)
     minitest (5.4.2)
     minitest-rails (2.1.0)
       minitest (~> 5.4)
