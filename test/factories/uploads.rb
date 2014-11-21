@@ -3,6 +3,7 @@ FactoryGirl.define do
     uuid         SecureRandom.uuid
     filename     "cat.png"
     content_type "image/png"
+    upload_type  "FileUpload"
   end
 
   factory :icon_upload, parent: :upload do

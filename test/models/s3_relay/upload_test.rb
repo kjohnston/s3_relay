@@ -109,6 +109,19 @@ describe S3Relay::Upload do
     end
   end
 
+  describe "#notify_parent" do
+    before { @upload = FactoryGirl.build(:upload) }
+
+    describe "when the parent is associated" do
+      it do
+        @product = FactoryGirl.create(:product)
+        @upload.parent = @product
+        @product.expects(:import_upload)
+        @upload.save
+      end
+    end
+  end
+
   describe "#private_url" do
     it do
       uuid             = SecureRandom.uuid
