@@ -43,6 +43,7 @@ uploadFile = (container, file) ->
       formData = new FormData()
       xhr = new XMLHttpRequest()
       endpoint = data.endpoint
+      disposition = container.data("disposition")
 
       formData.append("AWSAccessKeyID", data.awsaccesskeyid)
       formData.append("x-amz-server-side-encryption", data.x_amz_server_side_encryption)
@@ -52,6 +53,7 @@ uploadFile = (container, file) ->
       formData.append("policy", data.policy)
       formData.append("signature", data.signature)
       formData.append("content-type", file.type)
+      formData.append("content-disposition", "#{disposition}; filename=\"#{fileName}\"")
       formData.append("file", file)
 
       uuid = data.uuid

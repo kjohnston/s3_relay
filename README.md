@@ -139,6 +139,14 @@ product_params = params.require(:product)
 <%= s3_relay_field @product, :photo_uploads, multiple: true %>
 ```
 
+* By default the content-disposition on the files stored in the uploads bucket
+will be set to inline.  You can optionally set it to attachment by passing that
+option like so:
+
+```erb
+<%= s3_relay_field @artist, :mp3_uploads, multiple: true, disposition: "attachment" %>
+```
+
 ### Process uploads asynchronously
 
 Use your background job processor of choice to process uploads pending

@@ -13,7 +13,8 @@ module S3Relay
           data:  {
             parent_type: parent_type,
             parent_id:   parent.id.to_s,
-            association: association.to_s
+            association: association.to_s,
+            disposition: opts.fetch(:disposition, "inline")
           }
         }
       )
