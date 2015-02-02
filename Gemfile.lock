@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    s3_relay (0.0.3)
+    s3_relay (0.1.0)
       coffee-rails
       rails
 
