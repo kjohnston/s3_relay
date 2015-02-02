@@ -33,7 +33,7 @@ module S3Relay
         data["success_action_status"].must_equal "201"
         data["acl"].must_equal "acl"
         data["endpoint"].must_equal "https://bucket.s3-region.amazonaws.com"
-        data["policy"].length.must_equal 324  # TODO: Improve this
+        data["policy"].length.must_equal 380  # TODO: Improve this
         data["signature"].length.must_equal 28  # TODO: Improve this
         data["uuid"].must_equal uuid
       end

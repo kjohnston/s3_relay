@@ -43,6 +43,7 @@ module S3Relay
           { "x-amz-server-side-encryption" => "AES256" },
           { "success_action_status" => "201" },
           ["starts-with", "$content-type", ""],
+          ["starts-with", "$content-disposition", ""],
           ["starts-with", "$key", "#{uuid}/"]
         ]
       }
