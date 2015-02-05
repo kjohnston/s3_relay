@@ -147,7 +147,9 @@ option like so:
 <%= s3_relay_field @artist, :mp3_uploads, multiple: true, disposition: "attachment" %>
 ```
 
-### Process uploads asynchronously
+### Importing files
+
+#### Processing uploads asynchronously
 
 Use your background job processor of choice to process uploads pending
 ingestion (and image processing) by your app.
@@ -155,25 +157,52 @@ ingestion (and image processing) by your app.
 Say you're using [Resque](https://github.com/resque/resque) and [CarrierWave](https://github.com/carrierwaveuploader/carrierwave), you could define a job class:
 
 ```ruby
-class ProductPhotoImporter
+class ProductPhoto::Import
   @queue = :photo_import
 
-  def self.perform(product_id)
-    @product = Product.find(id)
+  def self.perform(product_id, upload_id)
+    @product = Product.find(product_id)
+    @upload  = S3Relay::Upload.find(upload_id)
 
-    @product.photo_uploads.pending.each do |upload|
-      @product.photos.create(remote_file_url: upload.private_url)
-      upload.mark_imported!
-    end
+    @product.photos.create!(remote_file_url: @upload.private_url)
+    @upload.mark_imported!
   end
 end
 ```
 
-Then, enqueue a job from your controller, callback, service object, etc.
-whenever there may be new uploads to process:
+#### Triggering upload imports for existing parent objects
+
+If you would like to immediately enqueue a job to begin importing an upload
+into its final desination, simply define a method on your parent object
+called `import_upload` and that method will be called after an `S3Relay::Upload`
+is created.
+
+#### Triggering upload imports for new parent objects
+
+If you would like to immediately enqueue a job to begin importing all of the
+uploads for a new parent object following its creation, you might want to setup
+a callback to enqueue those imports.
+
+#### Examples
 
 ```ruby
-Resque.enqueue(ProductPhotoImporter, product.id)
+class Product
+
+  # Called by s3_relay when an associated S3Relay::Upload object is created
+  def import_upload(upload_id)
+    Resque.enqueue(ProductPhoto::Import, id, upload_id)
+  end
+
+  after_commit :import_uploads, on: :create
+
+  # Called via after_commit to enqueue imports of S3Relay::Upload objects
+  def import_uploads
+    photo_uploads.pending.each do |upload|
+      Resque.enqueue(ProductPhoto::Import, id, upload.id)
+    end
+  end
+
+end
 ```
 
 ### Restricting the objects uploads can be associated with
