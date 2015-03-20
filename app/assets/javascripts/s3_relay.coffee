@@ -4,6 +4,11 @@ displayFailedUpload = (progressColumn=null) ->
   else
     alert("File could not be uploaded")
 
+publishEvent = (name, detail) ->
+  ev = document.createEvent "CustomEvent"
+  ev.initCustomEvent name, true, false, detail
+  document.dispatchEvent ev
+
 saveUrl = (container, uuid, filename, contentType, publicUrl) ->
   privateUrl = null
 
@@ -21,6 +26,7 @@ saveUrl = (container, uuid, filename, contentType, publicUrl) ->
       public_url: publicUrl
     success: (data, status, xhr) ->
       privateUrl = data.private_url
+      publishEvent "upload:success", "detail"
     error: (xhr) ->
       console.log xhr.responseText
 
