@@ -26,7 +26,7 @@ saveUrl = (container, uuid, filename, contentType, publicUrl) ->
       public_url: publicUrl
     success: (data, status, xhr) ->
       privateUrl = data.private_url
-      publishEvent "upload:success", "detail"
+      publishEvent "upload:success", { uuid: uuid }
     error: (xhr) ->
       console.log xhr.responseText
 
