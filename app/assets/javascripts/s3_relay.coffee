@@ -4,10 +4,8 @@ displayFailedUpload = (progressColumn=null) ->
   else
     alert("File could not be uploaded")
 
-publishEvent = (name, detail) ->
-  ev = document.createEvent "CustomEvent"
-  ev.initCustomEvent name, true, false, detail
-  document.dispatchEvent ev
+publishEvent = (target, name, detail) ->
+  $(target).trigger( name, detail )
 
 saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fileColumn) ->
   privateUrl = null
@@ -25,7 +23,6 @@ saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fi
       public_url: publicUrl
     success: (data, status, xhr) ->
       privateUrl = data.private_url
-      publishEvent "upload:success", { uuid: uuid }
       if privateUrl == null
         displayFailedUpload(progressColumn)
       else
@@ -34,6 +31,7 @@ saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fi
         virtualAttr = "#{container.data('parentType')}[new_#{container.data('association')}_uuids]"
         hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
         container.append(hiddenField)
+      publishEvent(container, "upload:success", [ uuid, filename, privateUrl ])
     error: (xhr) ->
       console.log xhr.responseText
 
