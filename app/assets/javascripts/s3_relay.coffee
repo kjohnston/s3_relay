@@ -9,13 +9,12 @@ publishEvent = (name, detail) ->
   ev.initCustomEvent name, true, false, detail
   document.dispatchEvent ev
 
-saveUrl = (container, uuid, filename, contentType, publicUrl) ->
+saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fileColumn) ->
   privateUrl = null
 
   $.ajax
     type: "POST"
     url: "/s3_relay/uploads"
-    async: false
     data:
       parent_type: container.data("parentType")
       parent_id: container.data("parentId")
@@ -27,6 +26,14 @@ saveUrl = (container, uuid, filename, contentType, publicUrl) ->
     success: (data, status, xhr) ->
       privateUrl = data.private_url
       publishEvent "upload:success", { uuid: uuid }
+      if privateUrl == null
+        displayFailedUpload(progressColumn)
+      else
+        fileColumn.html("<a href='#{privateUrl}'>#{filename}</a>")
+
+        virtualAttr = "#{container.data('parentType')}[new_#{container.data('association')}_uuids]"
+        hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
+        container.append(hiddenField)
     error: (xhr) ->
       console.log xhr.responseText
 
@@ -44,7 +51,6 @@ uploadFile = (container, file) ->
   $.ajax
     type: "GET"
     url: "/s3_relay/uploads/new"
-    async: false
     success: (data, status, xhr) ->
       formData = new FormData()
       xhr = new XMLHttpRequest()
@@ -87,17 +93,7 @@ uploadFile = (container, file) ->
           if xhr.status == 201
             contentType = file.type
             publicUrl = $("Location", xhr.responseXML).text()
-            privateUrl = saveUrl(container, uuid, fileName, contentType, publicUrl)
-
-            if privateUrl == null
-              displayFailedUpload(progressColumn)
-            else
-              fileColumn.html("<a href='#{privateUrl}'>#{fileName}</a>")
-
-              virtualAttr = "#{container.data('parentType')}[new_#{container.data('association')}_uuids]"
-              hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
-              container.append(hiddenField)
-
+            saveUrl(container, uuid, fileName, contentType, publicUrl, progressColumn, fileColumn)
           else
             displayFailedUpload(progressColumn)
             console.log $("Message", xhr.responseXML).text()
