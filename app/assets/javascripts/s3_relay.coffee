@@ -72,8 +72,8 @@ uploadFile = (container, file) ->
       progressMeter = $(".s3r-meter", progressColumn)
 
       xhr.upload.addEventListener "progress", (ev) ->
-        if ev.position
-          percentage = ((ev.position / ev.totalSize) * 100.0).toFixed(0)
+        if ev.loaded
+          percentage = ((ev.loaded / ev.total) * 100.0).toFixed(0)
           progressBar.show()
           progressMeter.css "width", "#{percentage}%"
         else
