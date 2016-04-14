@@ -37,7 +37,7 @@ module S3Relay
 
       association_method = "associate_#{attribute}"
 
-      after_save association_method
+      after_save association_method.to_sym
 
       define_method association_method do
         new_uuids = send(virtual_attribute)
