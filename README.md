@@ -235,12 +235,6 @@ end
 4. Push to the branch (`git push origin my-new-feature`)
 5. [Create a Pull Request](https://github.com/kjohnston/s3_relay/pull/new)
 
-## Contributors
-
-Many thanks go to the following who have contributed to making this gem even better:
-
-[your name here]
-
 ## License
 
 * Freely distributable and licensed under the [MIT license](http://kjohnston.mit-license.org/license.html).
