@@ -26,7 +26,7 @@ saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fi
       if privateUrl == null
         displayFailedUpload(progressColumn)
       else
-        fileColumn.html("<a href='#{privateUrl}'>#{filename}</a>")
+        fileColumn.html("<a href='#{privateUrl}' target='_blank'>#{filename}</a>")
 
         virtualAttr = "#{container.data('parentType')}[new_#{container.data('association')}_uuids]"
         hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
