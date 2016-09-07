@@ -39,14 +39,8 @@ describe S3Relay::Model do
       end
     end
 
-    describe "attributes" do
-      describe "has_one" do
-        it { @product.must_respond_to :new_photo_uploads_uuids= }
-      end
-
-      describe "has_many" do
-        it { @product.must_respond_to :new_icon_upload_uuid= }
-      end
+    describe "virtual attribute for UUID assignment" do
+      it { @product.must_respond_to :new_photo_uploads_uuids= }
     end
 
     describe "association method" do
@@ -55,15 +49,6 @@ describe S3Relay::Model do
         @icon    = FactoryGirl.create(:icon_upload)
         @photo_1 = FactoryGirl.create(:photo_upload)
         @photo_2 = FactoryGirl.create(:photo_upload)
-      end
-
-      describe "has_one" do
-        it do
-          @product.icon_upload.must_equal nil
-          @product.new_icon_upload_uuid = @icon.uuid
-          @product.associate_icon_upload
-          @product.icon_upload.must_equal @icon
-        end
       end
 
       describe "has_many" do

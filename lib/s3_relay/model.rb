@@ -15,8 +15,6 @@ module S3Relay
               upload_type: upload_type
             )
         end
-
-        virtual_attribute = "new_#{attribute}_uuids"
       else
         has_one attribute, as: :parent, class_name: "S3Relay::Upload"
 
@@ -29,10 +27,9 @@ module S3Relay
             )
             .order("pending_at DESC").last
         end
-
-        virtual_attribute = "new_#{attribute}_uuid"
       end
 
+      virtual_attribute = "new_#{attribute}_uuids"
       attr_accessor virtual_attribute
 
       association_method = "associate_#{attribute}"

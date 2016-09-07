@@ -127,7 +127,7 @@ end
 
 ```ruby
 product_params = params.require(:product)
-  .permit(:name, :new_icon_upload_uuid, new_photo_uploads_uuids: [])
+  .permit(:name, :new_icon_upload_uuids: [], new_photo_uploads_uuids: [])
 
 @product = Product.new(product_params)
 ```
