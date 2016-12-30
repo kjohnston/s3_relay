@@ -1,3 +1,7 @@
+## 0.4.2 (December 29, 2016)
+
+* Add unique parameter to new upload request to prevent Safari from consolidating requests
+
 ## 0.4.1 (September 7, 2016)
 
 * Set file upload links to open in a new window

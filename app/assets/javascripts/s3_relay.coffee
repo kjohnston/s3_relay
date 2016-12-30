@@ -46,9 +46,13 @@ uploadFiles = (container) ->
 uploadFile = (container, file) ->
   fileName = file.name
 
+  # Assign unique id to each file to pass as get parameter so Safari doesn't
+  # consolidate the requests
+  $(file).uniqueId()
+
   $.ajax
     type: "GET"
-    url: "/s3_relay/uploads/new"
+    url: "/s3_relay/uploads/new?unique_id=#{file.id}"
     success: (data, status, xhr) ->
       formData = new FormData()
       xhr = new XMLHttpRequest()
