@@ -1,7 +1,7 @@
 class S3Relay::UploadsController < ApplicationController
 
-  before_filter :authenticate
-  skip_before_filter :verify_authenticity_token
+  before_action :authenticate
+  skip_before_action :verify_authenticity_token
 
   def new
     render json: S3Relay::UploadPresigner.new.form_data

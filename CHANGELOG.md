@@ -1,3 +1,8 @@
+## 0.5.0 (December 29, 2016)
+
+* Resolve deprecation warnings for `before_filter` and `skip_before_filter`
+* Drop support for Rails 3
+
 ## 0.4.2 (December 29, 2016)
 
 * Add unique parameter to new upload request to prevent Safari from consolidating requests
