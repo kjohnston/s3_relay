@@ -1,3 +1,7 @@
+## 0.5.1 (January 14, 2017)
+
+* Use simple incrementation strategy for unique-ifying upload requests
+
 ## 0.5.0 (December 29, 2016)
 
 * Resolve deprecation warnings for `before_filter` and `skip_before_filter`
