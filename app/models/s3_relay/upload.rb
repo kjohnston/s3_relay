@@ -1,7 +1,7 @@
 module S3Relay
   class Upload < ActiveRecord::Base
 
-    belongs_to :parent, polymorphic: true
+    belongs_to :parent, polymorphic: true, optional: true
 
     validates :uuid,         presence: true, uniqueness: true
     validates :upload_type,  presence: true
