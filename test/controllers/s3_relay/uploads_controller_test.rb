@@ -22,7 +22,7 @@ module S3Relay
         S3Relay::UploadPresigner.any_instance.stubs(:uuid).returns(uuid)
         S3Relay::UploadPresigner.any_instance.stubs(:expires).returns(time)
 
-        get :new
+        get new_s3_relay_upload_url
         assert_response 200
 
         data = JSON.parse(response.body)
@@ -44,11 +44,12 @@ module S3Relay
       describe "success" do
         it do
           assert_difference "S3Relay::Upload.count", 1 do
-            post :create,
+            post s3_relay_uploads_url, params: {
               association:  "photo_uploads",
               uuid:         SecureRandom.uuid,
               filename:     "cat.png",
               content_type: "image/png"
+            }
           end
 
           assert_response 201
@@ -60,13 +61,14 @@ module S3Relay
 
             it do
               assert_difference "@product.photo_uploads.count", 1 do
-                post :create,
+                post s3_relay_uploads_url, params: {
                   association:  "photo_uploads",
                   uuid:         SecureRandom.uuid,
                   filename:     "cat.png",
                   content_type: "image/png",
                   parent_type:  @product.class.to_s,
                   parent_id:    @product.id.to_s
+                }
               end
 
               assert_response 201
@@ -76,40 +78,43 @@ module S3Relay
           describe "not matching an object" do
             it do
               assert_difference "S3Relay::Upload.count" do
-                post :create,
+                post s3_relay_uploads_url, params: {
                   association:  "photo_uploads",
                   uuid:         SecureRandom.uuid,
                   filename:     "cat.png",
                   content_type: "image/png",
                   parent_type:  "Product",
                   parent_id:    "10000000"
+                }
               end
 
               assert_response 201
+              body = JSON.parse(response.body)
 
-              assigns[:upload].parent_type.must_equal nil
-              assigns[:upload].parent_id.must_equal nil
+              assert body["parent_type"] == nil
+              assert body["parent_id"] == nil
             end
           end
 
           describe "with a current_user" do
             before do
               @user = OpenStruct.new(id: 123)
-              @controller.stubs(:current_user).returns(@user)
+              UploadsController.any_instance.stubs(:current_user).returns(@user)
             end
 
             it "associates the upload with the user" do
               assert_difference "S3Relay::Upload.count", 1 do
-                post :create,
+                post s3_relay_uploads_url, params: {
                   association:  "photo_uploads",
                   uuid:         SecureRandom.uuid,
                   filename:     "cat.png",
                   content_type: "image/png"
+                }
               end
 
               assert_response 201
-
-              assigns[:upload].user_id.must_equal @user.id
+              body = JSON.parse(response.body)
+              body["user_id"].must_equal @user.id
             end
           end
 
@@ -119,10 +124,11 @@ module S3Relay
       describe "error" do
         it do
           assert_no_difference "S3Relay::Upload.count" do
-            post :create,
+            post s3_relay_uploads_url, params: {
               uuid:         SecureRandom.uuid,
               filename:     "cat.png",
               content_type: "image/png"
+            }
           end
 
           assert_response 422

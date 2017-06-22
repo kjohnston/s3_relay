@@ -4,7 +4,7 @@ module S3Relay
     attr_reader :expires, :path
 
     def initialize(uuid, file, options={})
-      filename = URI.encode(file).gsub("+", "%2B")
+      filename = Addressable::URI.escape(file).gsub("+", "%2B")
       @path    = [uuid, filename].join("/")
       @expires = (options[:expires] || 10.minutes.from_now).to_i
     end

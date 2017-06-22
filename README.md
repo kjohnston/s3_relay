@@ -52,8 +52,8 @@ adhering to for a couple of major versions now.  Even IE, wuh?
 The latest versions of all of the following are ideal, but here are the gem's
 minimum requirements:
 
-* Ruby 1.9.3+
-* Rails 3.1+
+* For rails 5.1+, use version 0.6.x+ and ruby 2.3+
+* For rails 3.1 to 5.0, use version 0.5.x and ruby 1.9.3+
 * Modern versions of Chrome, Safari, FireFox or IE 10+
   * Note: Progress bars are currently disabled in IE
   * Note: IE <= 9 users will be instructed to upgrade their browser upon

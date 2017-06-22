@@ -24,5 +24,6 @@ require "rails/generators"
 require "rails/test_help"
 require "minitest/rails"
 require "minitest/pride"
+require "mocha/mini_test"
 
 Dir[File.join("./test/support/*.rb")].sort.each { |f| require f }
