@@ -11,7 +11,13 @@ class S3Relay::UploadsController < ApplicationController
     @upload = S3Relay::Upload.new(upload_attrs)
 
     if @upload.save
-      render json: { private_url: @upload.private_url }, status: 201
+      data = {
+        private_url: @upload.private_url,
+        parent_type: @upload.parent_type,
+        parent_id: @upload.parent_id,
+        user_id: user_attrs[:user_id]
+      }
+      render json: data, status: 201
     else
       render json: { errors: @upload.errors }, status: 422
     end
@@ -55,7 +61,7 @@ class S3Relay::UploadsController < ApplicationController
   end
 
   def user_attrs
-    if respond_to?(:current_user) && (id = current_user.try(:id))
+    if respond_to?(:current_user) && (id = current_user&.id)
       { user_id: id }
     else
       {}
