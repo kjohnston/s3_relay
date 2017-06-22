@@ -18,7 +18,7 @@ your Rails app to asynchronously ingest the files."
 
   s.add_runtime_dependency "coffee-rails"
   s.add_runtime_dependency "rails", ">= 5.1"
-  s.add_runtime_dependency "addressable", ">= 2.5.0" # URI.encode replacement
+  s.add_runtime_dependency "addressable", ">= 2.3.8" # URI.encode replacement
 
   s.add_development_dependency "guard-minitest", "~> 2.4",  ">= 2.4.6"
   s.add_development_dependency "minitest-rails", "~> 3.0.0", ">= 3.0.0"

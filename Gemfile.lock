@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     s3_relay (0.5.1)
-      addressable (>= 2.5.0)
+      addressable (>= 2.3.8)
       coffee-rails
       rails (>= 5.1)
 
