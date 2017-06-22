@@ -1,6 +1,6 @@
-## Unreleased
+## 0.6.0 (June 22, 2017)
 
-* Update for rails 5.1, update test `dummy` app to rails 5.1
+* Update for rails 5.1, NOTE: for rails < 5.1, use version 0.5.x
 * Adds `optional: true` to the `belongs_to :parent` relation
 * Switch from `URI.encode` to `Addressable::URI.escape`
 * Add all assigned data to returned json on `create` for ease of testing and flexibility
