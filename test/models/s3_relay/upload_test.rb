@@ -2,7 +2,7 @@ require "test_helper"
 
 describe S3Relay::Upload do
   before do
-    @upload = S3Relay::Upload.new
+    @upload = FactoryGirl.build(:upload)
   end
 
   describe "associations" do
@@ -17,12 +17,13 @@ describe S3Relay::Upload do
   describe "validations" do
     describe "uuid" do
       it "validates presence" do
+        @upload.uuid = nil
         @upload.valid?
         @upload.errors[:uuid].must_include("can't be blank")
       end
 
       it "validates uniqueness" do
-        S3Relay::Upload.new(uuid: @upload.uuid).save!(validate: false)
+        FactoryGirl.create(:file_upload, uuid: @upload.uuid)
         @upload.valid?
         @upload.errors[:uuid].must_include("has already been taken")
       end
@@ -60,9 +61,9 @@ describe S3Relay::Upload do
 
   describe "scopes" do
     before do
-      @pending = S3Relay::Upload.new
+      @pending = FactoryGirl.build(:file_upload)
         .tap { |u| u.save(validate: false) }
-      @imported = S3Relay::Upload.new(state: "imported")
+      @imported = FactoryGirl.build(:upload, state: "imported")
         .tap { |u| u.save(validate: false) }
     end
 
@@ -110,7 +111,7 @@ describe S3Relay::Upload do
   end
 
   describe "#notify_parent" do
-    before { @upload = FactoryGirl.build(:upload) }
+    before { @upload = FactoryGirl.build(:file_upload) }
 
     describe "when the parent is associated" do
       it do
