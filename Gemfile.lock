@@ -157,6 +157,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   database_cleaner (~> 1.6.1)
   factory_girl_rails (~> 4.8.0)
   guard-minitest (~> 2.4, >= 2.4.6)

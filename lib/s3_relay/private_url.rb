@@ -1,5 +1,3 @@
-require "addressable"
-
 module S3Relay
   class PrivateUrl < S3Relay::Base
 

@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gemspec
+gem "addressable", require: true
 
 group :test do
   gem "database_cleaner",   "~> 1.6.1"
