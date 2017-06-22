@@ -1,3 +1,11 @@
+## Unreleased
+
+* Update for rails 5.1, update test `dummy` app to rails 5.1
+* Adds `optional: true` to the `belongs_to :parent` relation
+* Switch from `URI.encode` to `Addressable::URI.escape`
+* Add all assigned data to returned json on `create` for ease of testing and flexibility
+* Fix issue with upload factory that produced same UUID for every test
+
 ## 0.5.1 (January 14, 2017)
 
 * Use simple incrementation strategy for unique-ifying upload requests
