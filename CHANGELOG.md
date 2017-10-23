@@ -1,3 +1,7 @@
+## 0.6.1 (October 23, 2017)
+
+* Fixes unnecessary helper call for Ruby 2.4
+
 ## 0.6.0 (June 22, 2017)
 
 * Update for rails 5.1, NOTE: for rails < 5.1, use version 0.5.x
