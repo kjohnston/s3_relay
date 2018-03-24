@@ -1,3 +1,8 @@
+## 0.6.2 (March 23, 2018)
+
+* Fixes issue where migration did not specify Rails version
+* Updates gems to address security vulnerabilities
+
 ## 0.6.1 (October 23, 2017)
 
 * Fixes unnecessary helper call for Ruby 2.4

@@ -9,7 +9,7 @@ your Rails app to asynchronously ingest the files.
 ## Overview
 
 This Rails engine allows you to quickly implement direct uploads to Amazon S3
-from your Rails 3.1+ / 4.x application.  It does not depend on any specific file
+from your Ruby on Rails application.  It does not depend on any specific file
 upload libraries, UI frameworks or AWS gems, like other solutions tend to.
 
 It works by utilizing Amazon S3's
