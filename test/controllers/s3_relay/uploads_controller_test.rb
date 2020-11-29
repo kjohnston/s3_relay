@@ -27,15 +27,15 @@ module S3Relay
 
         data = JSON.parse(response.body)
 
-        data["awsaccesskeyid"].must_equal "access-key-id"
-        data["x_amz_server_side_encryption"].must_equal "AES256"
-        data["key"].must_equal "#{uuid}/${filename}"
-        data["success_action_status"].must_equal "201"
-        data["acl"].must_equal "acl"
-        data["endpoint"].must_equal "https://bucket.s3-region.amazonaws.com"
-        data["policy"].length.must_equal 380  # TODO: Improve this
-        data["signature"].length.must_equal 28  # TODO: Improve this
-        data["uuid"].must_equal uuid
+        _(data["awsaccesskeyid"]).must_equal "access-key-id"
+        _(data["x_amz_server_side_encryption"]).must_equal "AES256"
+        _(data["key"]).must_equal "#{uuid}/${filename}"
+        _(data["success_action_status"]).must_equal "201"
+        _(data["acl"]).must_equal "acl"
+        _(data["endpoint"]).must_equal "https://s3.region.amazonaws.com/bucket"
+        _(data["policy"].length).must_equal 380  # TODO: Improve this
+        _(data["signature"].length).must_equal 28  # TODO: Improve this
+        _(data["uuid"]).must_equal uuid
       end
     end
 
@@ -57,7 +57,7 @@ module S3Relay
 
         describe "with parent attributes" do
           describe "matching an object" do
-            before { @product = FactoryGirl.create(:product) }
+            before { @product = FactoryBot.create(:product) }
 
             it do
               assert_difference "@product.photo_uploads.count", 1 do
@@ -114,7 +114,7 @@ module S3Relay
 
               assert_response 201
               body = JSON.parse(response.body)
-              body["user_id"].must_equal @user.id
+              _(body["user_id"]).must_equal @user.id
             end
           end
 
@@ -133,7 +133,7 @@ module S3Relay
 
           assert_response 422
 
-          JSON.parse(response.body)["errors"]["upload_type"]
+          _(JSON.parse(response.body)["errors"]["upload_type"])
             .must_include "can't be blank"
         end
       end

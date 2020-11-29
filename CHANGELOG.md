@@ -1,3 +1,9 @@
+## 0.7.0 (November 29, 2020)
+
+* Updates to align with Rails 5.2 and latest gem dependency versions
+* Update README to advise users to consider migration to Active Storage
+* Adopt latest S3 subdomain and path format
+
 ## 0.6.2 (March 23, 2018)
 
 * Fixes issue where migration did not specify Rails version

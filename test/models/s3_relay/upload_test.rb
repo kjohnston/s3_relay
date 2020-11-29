@@ -2,13 +2,13 @@ require "test_helper"
 
 describe S3Relay::Upload do
   before do
-    @upload = FactoryGirl.build(:upload)
+    @upload = FactoryBot.build(:upload)
   end
 
   describe "associations" do
     describe "parent" do
       it do
-        S3Relay::Upload.reflect_on_association(:parent).macro
+        _(S3Relay::Upload.reflect_on_association(:parent).macro)
           .must_equal :belongs_to
       end
     end
@@ -19,34 +19,34 @@ describe S3Relay::Upload do
       it "validates presence" do
         @upload.uuid = nil
         @upload.valid?
-        @upload.errors[:uuid].must_include("can't be blank")
+        _(@upload.errors[:uuid]).must_include("can't be blank")
       end
 
       it "validates uniqueness" do
-        FactoryGirl.create(:file_upload, uuid: @upload.uuid)
+        FactoryBot.create(:file_upload, uuid: @upload.uuid)
         @upload.valid?
-        @upload.errors[:uuid].must_include("has already been taken")
+        _(@upload.errors[:uuid]).must_include("has already been taken")
       end
     end
 
     describe "upload_type" do
       it "validates presence" do
         @upload.valid?
-        @upload.errors[:upload_type].must_include("can't be blank")
+        _(@upload.errors[:upload_type]).must_include("can't be blank")
       end
     end
 
     describe "filename" do
       it "validates presence" do
         @upload.valid?
-        @upload.errors[:filename].must_include("can't be blank")
+        _(@upload.errors[:filename]).must_include("can't be blank")
       end
     end
 
     describe "content_type" do
       it "validates presence" do
         @upload.valid?
-        @upload.errors[:content_type].must_include("can't be blank")
+        _(@upload.errors[:content_type]).must_include("can't be blank")
       end
     end
 
@@ -54,68 +54,68 @@ describe S3Relay::Upload do
       it "validates presence" do
         @upload.pending_at = nil
         @upload.valid?
-        @upload.errors[:pending_at].must_include("can't be blank")
+        _(@upload.errors[:pending_at]).must_include("can't be blank")
       end
     end
   end
 
   describe "scopes" do
     before do
-      @pending = FactoryGirl.build(:file_upload)
+      @pending = FactoryBot.build(:file_upload)
         .tap { |u| u.save(validate: false) }
-      @imported = FactoryGirl.build(:upload, state: "imported")
+      @imported = FactoryBot.build(:upload, state: "imported")
         .tap { |u| u.save(validate: false) }
     end
 
     describe "pending" do
       it do
         results = S3Relay::Upload.pending.all
-        results.must_include @pending
-        results.wont_include @imported
+        _(results).must_include @pending
+        _(results).wont_include @imported
       end
     end
 
     describe "imported" do
       it do
         results = S3Relay::Upload.imported.all
-        results.wont_include @pending
-        results.must_include @imported
+        _(results).wont_include @pending
+        _(results).must_include @imported
       end
     end
   end
 
   describe "upon finalization" do
     it do
-      @upload.state.must_equal "pending"
-      @upload.pending_at.wont_equal nil
+      _(@upload.state).must_equal "pending"
+      _(@upload.pending_at).wont_equal nil
     end
   end
 
   describe "#pending?" do
-    it { @upload.pending?.must_equal true }
+    it { _(@upload.pending?).must_equal true }
   end
 
   describe "#imported" do
     it do
       @upload.state = "imported"
-      @upload.imported?.must_equal true
+      _(@upload.imported?).must_equal true
     end
   end
 
   describe "#mark_imported!" do
     it do
       @upload.mark_imported!
-      @upload.state.must_equal "imported"
-      @upload.imported_at.wont_equal nil
+      _(@upload.state).must_equal "imported"
+      _(@upload.imported_at).wont_equal nil
     end
   end
 
   describe "#notify_parent" do
-    before { @upload = FactoryGirl.build(:file_upload) }
+    before { @upload = FactoryBot.build(:file_upload) }
 
     describe "when the parent is associated" do
       it do
-        @product = FactoryGirl.create(:product)
+        @product = FactoryBot.create(:product)
         @upload.parent = @product
         @product.expects(:import_upload)
         @upload.save
@@ -135,7 +135,7 @@ describe S3Relay::Upload do
       S3Relay::PrivateUrl.expects(:new).with(uuid, filename).returns(klass)
       klass.expects(:generate).returns(url)
 
-      @upload.private_url.must_equal url
+      _(@upload.private_url).must_equal url
     end
   end
 

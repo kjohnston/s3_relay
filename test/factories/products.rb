@@ -1,5 +1,5 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :product do
-    name "Flux Capacitor"
+    name { "Flux Capacitor" }
   end
 end

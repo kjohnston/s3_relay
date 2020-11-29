@@ -1,4 +1,4 @@
-class CreateS3RelayUploads < ActiveRecord::Migration[4.2]
+class CreateS3RelayUploads < ActiveRecord::Migration[5.0]
   def change
     create_table :s3_relay_uploads do |t|
       t.binary :uuid, length: 16

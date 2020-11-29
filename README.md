@@ -6,6 +6,8 @@
 Enables direct file uploads to Amazon S3 and provides a flexible pattern for
 your Rails app to asynchronously ingest the files.
 
+**Note: If you are using Rails 5.2+ you should consider migrating to Active Storage as this gem will not be suppored for Rails 6+.**
+
 ## Overview
 
 This Rails engine allows you to quickly implement direct uploads to Amazon S3
@@ -40,24 +42,6 @@ write to disk.  S3 then decrypts and streams the files as they are downloaded.
 * Models can have multiple types of uploads and specify for each if only one
 file is permitted or if multiple are.
 * Multiple files can upload concurrently to S3.
-
-## Technology & Requirements
-
-Uploads are made possible by use of the `FormData` object, defined in
-[XMLHttpRequest Level 2](http://dev.w3.org/2006/webapi/XMLHttpRequest-2/).
-Many people are broadly referring to this as being provided by HTML5, but
-technically it's part of the aforementioned spec that browsers have been
-adhering to for a couple of major versions now.  Even IE, wuh?
-
-The latest versions of all of the following are ideal, but here are the gem's
-minimum requirements:
-
-* For rails 5.1+, use version 0.6.x+ and ruby 2.3+
-* For rails 3.1 to 5.0, use version 0.5.x and ruby 1.9.3+
-* Modern versions of Chrome, Safari, FireFox or IE 10+
-  * Note: Progress bars are currently disabled in IE
-  * Note: IE <= 9 users will be instructed to upgrade their browser upon
-  selecting a file
 
 ## Demo
 

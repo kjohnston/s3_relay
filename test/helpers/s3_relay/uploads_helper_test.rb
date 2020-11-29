@@ -1,7 +1,10 @@
 require "test_helper"
 
+include ActionView::Helpers::FormTagHelper
+include S3Relay::UploadsHelper
+
 describe S3Relay::UploadsHelper do
-  before { @product = FactoryGirl.create(:product) }
+  before { @product = FactoryBot.create(:product) }
 
   describe "#s3_relay_field" do
     describe "without options" do
