@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,27 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141021002149) do
+ActiveRecord::Schema.define(version: 2014_10_21_002149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "products", force: true do |t|
-    t.string   "name"
+  create_table "products", id: :serial, force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "s3_relay_uploads", force: true do |t|
-    t.binary   "uuid"
-    t.integer  "user_id"
-    t.string   "parent_type"
-    t.integer  "parent_id"
-    t.string   "upload_type"
-    t.text     "filename"
-    t.string   "content_type"
-    t.string   "state"
-    t.json     "data",         default: {}
+  create_table "s3_relay_uploads", id: :serial, force: :cascade do |t|
+    t.uuid "uuid", null: false
+    t.integer "user_id"
+    t.string "parent_type"
+    t.integer "parent_id"
+    t.string "upload_type"
+    t.text "filename"
+    t.string "content_type"
+    t.string "state"
+    t.jsonb "data", default: {}
     t.datetime "pending_at"
     t.datetime "imported_at"
     t.datetime "created_at"

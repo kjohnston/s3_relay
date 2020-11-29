@@ -23,15 +23,15 @@ describe S3Relay::UploadPresigner do
 
       data = S3Relay::UploadPresigner.new(expires: time).form_data
 
-      data["awsaccesskeyid"].must_equal "access-key-id"
-      data["x_amz_server_side_encryption"].must_equal "AES256"
-      data["key"].must_equal "#{uuid}/${filename}"
-      data["success_action_status"].must_equal "201"
-      data["acl"].must_equal "acl"
-      data["endpoint"].must_equal "https://bucket.s3-region.amazonaws.com"
-      data["policy"].length.must_equal 400  # TODO: Improve this
-      data["signature"].length.must_equal 28  # TODO: Improve this
-      data["uuid"].must_equal uuid
+      _(data["awsaccesskeyid"]).must_equal "access-key-id"
+      _(data["x_amz_server_side_encryption"]).must_equal "AES256"
+      _(data["key"]).must_equal "#{uuid}/${filename}"
+      _(data["success_action_status"]).must_equal "201"
+      _(data["acl"]).must_equal "acl"
+      _(data["endpoint"]).must_equal "https://s3.region.amazonaws.com/bucket"
+      _(data["policy"].length).must_equal 400  # TODO: Improve this
+      _(data["signature"].length).must_equal 28  # TODO: Improve this
+      _(data["uuid"]).must_equal uuid
     end
   end
 

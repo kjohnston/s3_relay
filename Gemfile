@@ -4,7 +4,6 @@ gemspec
 gem "addressable", require: true
 
 group :test do
-  gem "database_cleaner", "~> 1.6.2"
-  gem "factory_girl_rails", "~> 4.9.0"
-  gem "pry-byebug", "~> 3.6.0"
+  gem "database_cleaner", "~> 1.8.5"
+  gem "factory_bot_rails", "~> 6.1.0"
 end

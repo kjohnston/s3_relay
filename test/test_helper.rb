@@ -1,4 +1,4 @@
-ENV["RAILS_ENV"] = "test"
+ENV["RAILS_ENV"] ||= "test"
 
 IS_RAKE_TASK = (!! ($0 =~ /rake/))
 
@@ -14,16 +14,13 @@ if IS_RAKE_TASK
   end
 end
 
-ENV["RAILS_ENV"] = "test"
 require File.expand_path("../dummy/config/environment",  __FILE__)
 
 Dir[File.join("./test/factories/*.rb")].sort.each { |f| require f }
 
-require "minitest/autorun"
 require "rails/generators"
 require "rails/test_help"
 require "minitest/rails"
-require "minitest/pride"
-require "mocha/mini_test"
+require "mocha/minitest"
 
 Dir[File.join("./test/support/*.rb")].sort.each { |f| require f }
